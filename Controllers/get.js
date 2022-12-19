@@ -7,7 +7,7 @@ const getstudents= async(req,res)=> {
    
    try {
       const request = await dbreq();
-      let students = await request.query("EXEC usp_student '','','','SELECT'");
+      let students = await request.query("EXEC usp_student '','','','','SELECT'");
       console.log(students.recordsets);
       res.json(students.recordsets);
    } catch (error) {

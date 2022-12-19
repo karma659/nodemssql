@@ -1,27 +1,52 @@
 
 const { dbreq } = require("../Model/Connection");
+const jwt =require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const addstudent=async(req,res)=> {
-   
-   let data=req.body ;
-   console.log(`${data.roll}`);
-//     let {...student}=req.body;
-//      console.log(student);
-//   const myJSON = JSON.stringify(student);
-//     console.log(myJSON);
+     // Get user input
+   let {name,email , roll ,password}=req.body ;
 
     try {
-      const request = await dbreq();
- 
+              // Validate user input
+      if (!(email && password && roll && name)) {
+         res.status(400).send("All input is required");
+       }
+
+       const request = await dbreq();
+    // check if user already exist
+    // Validate if user exist in our database
+       const oldStudent = await request.query(`SELECT roll from Table_1 where roll=${roll}`);
+    
+       
+       console.log(oldStudent.recordsets[0][1]);
+
+       if (oldStudent.recordsets[0][1]) {
+         return res.status(409).send("Student Already Exist. Please Login");
+       }
+     
+   
+   // Create user in our database
        let insertstudent = await 
           request
-          .query(`EXEC usp_student '${data.name}','${data.email}','${data.roll}','INSERT'`);
- 
-        res.status('201').json(insertstudent.recordsets);
-    } catch (err) {
-       console.log(err);
-    }
- }
+          .query(`EXEC usp_student '${name}','${email}','${roll}','${password}','INSERT'`);
+          console.log("student successfully created");
+       
+ //create token
+ const student={ name:name,email:email,roll:roll }
+   const token = jwt.sign(student,process.env.Token_key,{expiresIn:"1h" });
+    // save user token
+    console.log(process.env.Token_key)
+    console.log(insertstudent.recordsets);
+    console.log(token);
+
+    res.cookie("token",token,{httpOnly:true});
+    res.status(201).json({accesstoken:token});
+  } catch (err) {
+   console.log(err);
+}
+}
  
  
 module.exports = {

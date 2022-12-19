@@ -10,7 +10,7 @@ const deletestudent = async(req,res)=> {
     
      const request = await dbreq();
        let student = await request
-          .query(`EXEC usp_student '${data.name}','${data.email}','${data.roll}','DELETE'`);
+          .query(`EXEC usp_student '${data.name}','${data.email}','${data.roll}','${data.password}','DELETE'`);
        console.log(student.recordsets);
        res.json(student.recordsets);
     } catch (error) {

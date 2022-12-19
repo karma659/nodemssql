@@ -1,8 +1,9 @@
 class Students{
-       constructor(name,email,roll){
+       constructor(name,email,roll,password){
            this.name=name;
            this.email=email;
            this.roll=roll;
+           this.password= password;
        }
 
 
