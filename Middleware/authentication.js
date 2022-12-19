@@ -1,7 +1,7 @@
 const jwt =require('jsonwebtoken');
 const dotenv = require('dotenv');
 
-const verifyToken = (req, res, next) => {
+const verifyToken = async(req, res, next) => {
     
     
     const token = req.cookies.token;
@@ -10,13 +10,13 @@ const verifyToken = (req, res, next) => {
     if (token==null) {
       return res.status(403).send("A token is required for authentication");
     }
-       jwt.verify(token, process.env.Token_key,(err,student)=>{
+       jwt.verify(token, process.env.Token_key,(err,user)=>{
          if(err)res.sendStatus(403);
-        req.student =student;
+        req.user =user;
         next();
       });
     
-    return next();
+   
   };
   
   module.exports = {

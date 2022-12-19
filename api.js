@@ -16,6 +16,7 @@ const {addstudent}= require('./Controllers/post');
 const { updatestudent } = require('./Controllers/update');
 const { deletestudent } = require('./Controllers/delete');
 const {verifyToken } = require('./Middleware/authentication');
+const authentication = require('./Middleware/authentication');
 
 
 router.use((req,res,next)=>{
@@ -23,17 +24,17 @@ console.log("middleware");
 next();
 });
 
-router.get('/students', getstudents);
-router.get('/students/:id',getstudent);
+router.get('/students',verifyToken , getstudents);
+router.get('/students/:id',verifyToken,getstudent);
 router.post('/student',addstudent);
 router.put('/student',updatestudent);
 router.delete('/student',deletestudent);
 
 router.get('/login',verifyToken,(req,res)=>{
-    console.log(req.student.name);
-    console.log(req.student.roll);
-    console.log(req.student);
-res.send(req.student);
+  
+    console.log(req.user.roll);
+    console.log(req.user);
+res.send(req.user);
 
 })
 

@@ -34,11 +34,10 @@ const addstudent=async(req,res)=> {
           console.log("student successfully created");
        
  //create token
- const student={ name:name,email:email,roll:roll }
-   const token = jwt.sign(student,process.env.Token_key,{expiresIn:"1h" });
+ const user={ name:name,email:email,roll:roll }
+   const token = jwt.sign(user,process.env.Token_key,{expiresIn:"15s" });
     // save user token
     console.log(process.env.Token_key)
-    console.log(insertstudent.recordsets);
     console.log(token);
 
     res.cookie("token",token,{httpOnly:true});
