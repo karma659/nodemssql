@@ -43,3 +43,4 @@ app.listen(port);
 console.log("api running on port : "+port);
 
 
+module.exports = app;

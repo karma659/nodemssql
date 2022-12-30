@@ -1,8 +1,9 @@
-
-const { dbreq } = require("../Model/Connection");
-const jwt =require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
+const { dbreq } = require("../Model/Connection");
+const jwt =require('jsonwebtoken');
+
+
 
 const addstudent=async(req,res)=> {
      // Get user input
@@ -35,7 +36,7 @@ const addstudent=async(req,res)=> {
        
  //create token
  const user={ name:name,email:email,roll:roll }
-   const token = jwt.sign(user,process.env.Token_key,{expiresIn:"15s" });
+   const token = jwt.sign(user,process.env.Token_key,{expiresIn:"1hr" });
     // save user token
     console.log(process.env.Token_key)
     console.log(token);
